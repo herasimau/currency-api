@@ -5,15 +5,15 @@ package com.currency.api.domain;
  */
 public class CurrencyPair {
 
-    String instrument;
-    String date;
-    String time;
-    String BID_T1;
-    String ASK_T1;
-    String BID_T2;
-    String ASK_T2;
-    String BID_T3;
-    String ASK_T3;
+    private String instrument;
+    private String date;
+    private String time;
+    private String BID_T1;
+    private String ASK_T1;
+    private String BID_T2;
+    private String ASK_T2;
+    private String BID_T3;
+    private String ASK_T3;
 
 
 
