@@ -1,7 +1,8 @@
 package com.currency.api.parser;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.currency.api.domain.CurrencyPair;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -31,32 +32,23 @@ public class Parser {
         connectionUrl +=type;
     }
 
-    public JSONObject getByInstrument(Instrument instrument){
-
+    public String getByInstrument(Instrument instrument) throws JsonProcessingException {
+        CurrencyPair currencyPair = new CurrencyPair();
+        ObjectMapper mapper = new ObjectMapper();
         ArrayList<String> data = parseData(instrument);
-        JSONObject jsonObject  = new JSONObject();
-        JSONArray array = new JSONArray();
-        JSONObject arrayElementOne = new JSONObject();
-        arrayElementOne.put("instrument", data.get(0));
-        array.put(arrayElementOne);
-        JSONArray arrayElementOneArray = new JSONArray();
-        JSONObject arrayElementOneArrayElementOne = new JSONObject();
-        arrayElementOneArrayElementOne.put("DATE", convertDate(Long.parseLong(data.get(1))));
-        arrayElementOneArrayElementOne.put("TIME", convertTime(Long.parseLong(data.get(1))));
-        arrayElementOneArrayElementOne.put("BID_T1", data.get(2));
-        arrayElementOneArrayElementOne.put("ASK_T1", data.get(3));
-        arrayElementOneArrayElementOne.put("BID_T2", data.get(4));
-        arrayElementOneArrayElementOne.put("ASK_T2", data.get(5));
-        arrayElementOneArrayElementOne.put("BID_T3", data.get(6));
-        arrayElementOneArrayElementOne.put("ASK_T3", data.get(7));
-        arrayElementOneArray.put(arrayElementOneArrayElementOne);
-        arrayElementOne.put("SPOT", arrayElementOneArray);
-        jsonObject.put("data", array);
-        jsonObject.put("totalCount", array.length());
-        jsonObject.put("success", "true");
+        currencyPair.setInstrument(data.get(0));
+        currencyPair.setDate(convertDate(Long.parseLong(data.get(1))));
+        currencyPair.setTime(convertTime(Long.parseLong(data.get(1))));
+        currencyPair.setBID_T1(data.get(2));
+        currencyPair.setASK_T1(data.get(3));
+        currencyPair.setBID_T2(data.get(4));
+        currencyPair.setASK_T2(data.get(5));
+        currencyPair.setBID_T3(data.get(6));
+        currencyPair.setASK_T3(data.get(7));
 
-        return jsonObject;
+        return mapper.writeValueAsString(currencyPair);
     }
+
 
     protected  ArrayList<String> parseData(Instrument instrument){
         return type.equals("html")?parseByHtml(instrument):parseByCsv(instrument);
