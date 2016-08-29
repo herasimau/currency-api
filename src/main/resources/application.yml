@@ -1,0 +1,6 @@
+# EMBEDDED SERVER CONFIGURATION
+server:
+    port: ${port:8080}
+
+# LOGGING
+logging.level.org.springframework.security: DEBUG
